@@ -1,9 +1,9 @@
 # Unit Test Coverage Report
 
 ## Overview
-**Total Test Count**: 12 tests  
-**Pass Rate**: 100% (12/12 passed)  
-**Code Coverage**: ~95%+ of production code
+**Total Test Count**: 33 tests  
+**Pass Rate**: 100% (33/33 passed)  
+**Code Coverage**: High coverage across console and Web API components
 
 ## Test Summary
 
@@ -60,7 +60,9 @@
     - Correct max_tokens: 2048
     - Proper message array with system and user roles
 
-## Methods Covered
+## Console App Coverage (PromptGenerator.Tests)
+
+### Methods Covered
 
 ### Covered Methods
 ✅ `PromptGeneratorAgent()` - Constructor  
@@ -83,6 +85,15 @@
 | Error Handling | 100% | HttpRequestException, JsonException, null values |
 | **Total Coverage** | **~95%+** | Comprehensive test suite |
 
+## Web API Coverage (PromptGeneratorWebApi.Tests)
+
+### Unit Tests
+- `PromptGeneratorServiceTests` covers success paths, error handling, and JSON parsing
+
+### Integration Tests
+- `/api/generate-prompt` happy path + validation cases
+- `/api/health` endpoint
+
 ## Testing Approach
 
 ### Mocking Strategy
@@ -102,15 +113,14 @@
 ## Running the Tests
 
 ```bash
-cd tests/PromptGenerator.Tests
 dotnet test
 ```
 
 ### Expected Output
 ```
 Test Run Successful.
-Total tests: 12
-     Passed: 12
+Total tests: 33
+  Passed: 33
      Failed: 0
 ```
 

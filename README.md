@@ -1,6 +1,6 @@
-# .NET Console Prompt Generator
+# .NET Prompt Generator (Console + Web API)
 
-A sophisticated .NET console application that uses AI to transform your problem statements into optimized, production-ready prompts for ChatGPT. The tool guides your problems through a multi-stage pipeline using the OpenAI API's Chat Completions endpoint.
+A .NET solution that transforms problem statements into optimized, production-ready prompts for ChatGPT. It includes a console app and a minimal Web API, both using a multi-stage pipeline with OpenAI's Chat Completions endpoint.
 
 ## Features
 
@@ -9,10 +9,12 @@ A sophisticated .NET console application that uses AI to transform your problem 
 - **Prompt Optimization**: Generates a polished, specific prompt ready to copy-paste into ChatGPT
 - **OpenAI Integration**: Direct integration with OpenAI's Chat Completions API (gpt-3.5-turbo model)
 - **User-Friendly Interface**: Simple console-based interaction
+- **Web API**: Minimal API with Swagger/OpenAPI documentation
+- **Health Check**: `/api/health` endpoint for monitoring
 
 ## Architecture
 
-The application implements a multi-stage prompt generation pipeline:
+Both the console app and the Web API implement a multi-stage prompt generation pipeline:
 
 1. **Analysis Stage**: Examines the user's problem to extract key characteristics
 2. **Enrichment Stage**: Gathers context and best practices using the analysis
@@ -42,22 +44,43 @@ dotnet user-secrets set "OpenAI:ApiKey" "your-openai-api-key-here"
 
 **Or using Environment Variable**:
 ```bash
-set OPENAI_API_KEY=your-openai-api-key-here
+set OpenAI__ApiKey=your-openai-api-key-here
+```
+
+### Web API Setup
+
+```bash
+cd src/PromptGeneratorWebApi
+dotnet user-secrets set "OpenAI:ApiKey" "your-openai-api-key-here"
+```
+
+Or set the environment variable:
+
+```bash
+set OpenAI__ApiKey=your-openai-api-key-here
 ```
 
 ## Building and Running
 
-### Build the Project
+### Build the Console App
 From the `src/PromptGenerator` directory:
 ```bash
 dotnet build
 ```
 
-### Run the Application
+### Run the Console App
 From the `src/PromptGenerator` directory:
 ```bash
 dotnet run
 ```
+
+### Run the Web API
+From the `src/PromptGeneratorWebApi` directory:
+```bash
+dotnet run
+```
+
+Swagger UI (default): http://localhost:5000/swagger
 
 ### Example Session
 ```
@@ -84,24 +107,33 @@ Context Enrichment:
 ```
 
 ## Project Structure
+```
 dotnet-console-prompt_generator/
 ├── src/
-│   └── PromptGenerator/
-│       ├── PromptGenerator.csproj     # Project file with dependencies
-│       ├── Program.cs                 # Entry point and OpenAI configuration
-│       └── PromptGeneratorAgent.cs    # Core agent logic with 3-stage pipeline
+│   ├── PromptGenerator/
+│   │   ├── PromptGenerator.csproj
+│   │   ├── Program.cs
+│   │   └── PromptGeneratorAgent.cs
+│   └── PromptGeneratorWebApi/
+│       ├── Models/
+│       ├── Services/
+│       ├── Program.cs
+│       └── PromptGeneratorWebApi.csproj
+├── tests/
+│   ├── PromptGenerator.Tests/
+│   └── PromptGeneratorWebApi.Tests/
 ├── docs/
-│   ├── SETUP.md                       # Detailed setup instructions
-│   └── CHANGELOG.md                   # Version history and features
-├── System.Net.Http.Json** (v5.0.0): HTTP JSON serialization utilities
-└── dotnet-console-prompt_generator.sln # Solutiony point
-├── PromptGeneratorAgent.cs          # Core agent logic
-└── README.md                        # This file
+│   ├── SETUP.md
+│   ├── WEB_API_README.md
+│   ├── TEST_COVERAGE.md
+│   └── CHANGELOG.md
+├── dotnet-console-prompt_generator.sln
+└── README.md
 ```
 
 ## Dependencies
 
-- **System.Net.Http.Json** (v5.0.0): HTTP client utilities for JSON serialization
+- **System.Net.Http.Json**: HTTP client utilities for JSON serialization
 - **Microsoft.Extensions.Configuration** (v8.0.0): Configuration management
 - **Microsoft.Extensions.Configuration.UserSecrets** (v8.0.0): Secure local credential management via User Secrets
 
@@ -132,23 +164,13 @@ The agent uses three specialized system prompts:
 ## Security Notes
 
 - **Never** commit your OpenAI API key to version control
-- Use User Secrets application in `src/PromptGenerator/` to:
+- Use User Secrets in `src/PromptGenerator/` and `src/PromptGeneratorWebApi/`
 
-- **System Prompts**: Edit the prompt strings in `PromptGeneratorAgent.cs` to:
-  - Adjust the analysis focus
-  - Change the enrichment strategy
-  - Customize the output format
-  - Tailor prompts for specific domains
+## Customization
 
-- **API Model**: Change the model in `PromptGeneratorAgent.cs` from `gpt-3.5-turbo` to `gpt-4`, `gpt-4-turbo`, etc.
-
-- **Token Limits**: Adjust `max_tokens` values in the API requests for each stage
-
-You can modify the system prompts in `PromptGeneratorAgent.cs` to:
-- Adjust the analysis focus
-- Change the enrichment strategy
-- Customize the output format
-- Tailor prompts for specific domains
+- **System Prompts**: Edit the prompt strings in `PromptGeneratorAgent.cs`
+- **API Model**: Change the model from `gpt-3.5-turbo` to another supported model
+- **Token Limits**: Adjust `max_tokens` in the API request payloads
 
 ## Example Use Cases
 
@@ -172,6 +194,16 @@ You can modify the system prompts in `PromptGeneratorAgent.cs` to:
 ### Build Errors
 - Ensure you have .NET 8.0 or later: `dotnet --version`
 - Run `dotnet restore` to restore packages
+
+## Testing
+
+```bash
+dotnet test
+```
+
+Test projects:
+- `tests/PromptGenerator.Tests` (console app)
+- `tests/PromptGeneratorWebApi.Tests` (Web API unit + integration tests)
 
 ## Future Enhancements
 

@@ -1,11 +1,21 @@
 # Changelog
 
+## [1.1.0] - 2026-01-31
+
+### Added
+- Web API unit tests for `PromptGeneratorService`
+- Web API integration tests for `/api/generate-prompt` and `/api/health`
+- Updated documentation for Web API usage and testing
+
+### Fixed
+- Corrected documentation references to OpenAI integration to match HttpClient-based implementation
+
 ## [1.0.0] - 2026-01-31
 
 ### Added
 - Initial release of .NET Console Prompt Generator
 - Multi-stage prompt optimization pipeline (Analysis → Enrichment → Optimization)
-- OpenAI API integration using Microsoft.Extensions.AI
+- OpenAI API integration using HttpClient
 - Problem analysis system with domain and complexity detection
 - Context enrichment with best practices and pitfall identification
 - Production-ready prompt generation

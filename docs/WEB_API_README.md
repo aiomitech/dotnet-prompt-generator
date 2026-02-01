@@ -72,14 +72,14 @@ dotnet run
 
 The API will start on:
 - **HTTP**: `http://localhost:5000`
-- **HTTPS**: `https://localhost:5001`
+- **HTTPS** (if configured): `https://localhost:5001`
 
 ### 5. Access Swagger UI
 
 Once the API is running, open your browser and navigate to:
 
 ```
-https://localhost:5001/swagger
+http://localhost:5000/swagger
 ```
 
 ## API Endpoints
@@ -141,12 +141,12 @@ https://localhost:5001/swagger
 
 ```bash
 # Generate optimized prompt
-curl -X POST https://localhost:5001/api/generate-prompt \
+curl -X POST http://localhost:5000/api/generate-prompt \
   -H "Content-Type: application/json" \
   -d '{"problem": "I need to build a REST API with authentication"}'
 
 # Health check
-curl https://localhost:5001/api/health
+curl http://localhost:5000/api/health
 ```
 
 ## Testing with PowerShell
@@ -157,13 +157,13 @@ $body = @{
     problem = "I need to build a REST API with authentication"
 } | ConvertTo-Json
 
-Invoke-RestMethod -Uri "https://localhost:5001/api/generate-prompt" `
+Invoke-RestMethod -Uri "http://localhost:5000/api/generate-prompt" `
     -Method Post `
     -Body $body `
     -ContentType "application/json"
 
 # Health check
-Invoke-RestMethod -Uri "https://localhost:5001/api/health"
+Invoke-RestMethod -Uri "http://localhost:5000/api/health"
 ```
 
 ## Architecture
@@ -313,6 +313,16 @@ Trust the development certificate:
 dotnet dev-certs https --trust
 ```
 
+## Testing
+
+```bash
+dotnet test tests/PromptGeneratorWebApi.Tests/
+```
+
+This project includes:
+- Unit tests for `PromptGeneratorService`
+- Integration tests for `/api/generate-prompt` and `/api/health`
+
 ## Future Enhancements
 
 - [ ] Add authentication/authorization (JWT, API Keys)
@@ -322,7 +332,7 @@ dotnet dev-certs https --trust
 - [ ] Batch processing endpoint
 - [ ] WebSocket support for streaming responses
 - [ ] Telemetry and Application Insights integration
-- [ ] Unit and integration tests
+-- [ ] Add rate limiting metrics and structured logging
 
 ## License
 
