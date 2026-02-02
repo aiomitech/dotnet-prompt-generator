@@ -40,8 +40,8 @@ src/
 ### 1. Clone the Repository
 
 ```powershell
-git clone https://github.com/aiomitech/dotnet-console-prompt-generator.git
-cd dotnet-console-prompt-generator
+git clone https://github.com/aiomitech/dotnet-prompt-generator.git
+cd dotnet-prompt-generator
 ```
 
 ### 2. Configure OpenAI API Key
@@ -332,7 +332,7 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 ## Repository
 
-[https://github.com/aiomitech/dotnet-console-prompt-generator](https://github.com/aiomitech/dotnet-console-prompt-generator)
+[https://github.com/aiomitech/dotnet-prompt-generator](https://github.com/aiomitech/dotnet-prompt-generator)
 
 ---
 
