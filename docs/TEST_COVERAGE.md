@@ -89,8 +89,8 @@ This repository includes unit and integration tests for the console app and Web 
 - `PromptGeneratorServiceTests` covers success paths, error handling, and JSON parsing
 
 ### Integration Tests
-- `/api/generate-prompt` happy path + validation cases
-- `/api/health` endpoint
+- `/api/v1/generate-prompt` happy path + validation cases
+- `/api/v1/health` endpoint
 
 ## Testing Approach
 

@@ -13,7 +13,7 @@
 
 ### Added
 - Web API unit tests for `PromptGeneratorService`
-- Web API integration tests for `/api/generate-prompt` and `/api/health`
+- Web API integration tests for `/api/v1/generate-prompt` and `/api/v1/health`
 - Updated documentation for Web API usage and testing
 
 ### Fixed

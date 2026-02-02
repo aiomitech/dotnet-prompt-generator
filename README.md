@@ -10,7 +10,7 @@ A .NET solution that transforms problem statements into optimized, production-re
 - **OpenAI Integration**: Direct integration with OpenAI's Chat Completions API (gpt-3.5-turbo model)
 - **User-Friendly Interface**: Simple console-based interaction
 - **Web API**: Minimal API with Swagger/OpenAPI documentation
-- **Health Check**: `/api/health` endpoint for monitoring
+- **Health Check**: `/api/v1/health` endpoint for monitoring
 
 ## Architecture
 

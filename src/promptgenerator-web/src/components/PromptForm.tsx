@@ -73,7 +73,7 @@ export default function PromptForm() {
 
     try {
       setIsLoading(true);
-      const response = await fetch(buildApiUrl("/api/generate-prompt"), {
+      const response = await fetch(buildApiUrl("/api/v1/generate-prompt"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

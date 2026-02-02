@@ -8,6 +8,9 @@ namespace PromptGeneratorWebApi.Extensions;
 /// </summary>
 public static class ApiConfigurationExtensions
 {
+    private const string ApiVersion = "v1";
+    private const string ApiBasePath = "/api/" + ApiVersion;
+
     /// <summary>
     /// Configures the API by setting up middleware pipeline and registering endpoints.
     /// </summary>
@@ -41,16 +44,18 @@ public static class ApiConfigurationExtensions
     /// </summary>
     private static void MapEndpoints(WebApplication app)
     {
-        MapPromptGenerationEndpoint(app);
-        MapHealthCheckEndpoint(app);
+        var api = app.MapGroup(ApiBasePath);
+
+        MapPromptGenerationEndpoint(api);
+        MapHealthCheckEndpoint(api);
     }
 
     /// <summary>
-    /// Maps the POST /api/generate-prompt endpoint.
+    /// Maps the POST /api/v1/generate-prompt endpoint.
     /// </summary>
-    private static void MapPromptGenerationEndpoint(WebApplication app)
+    private static void MapPromptGenerationEndpoint(IEndpointRouteBuilder endpoints)
     {
-        app.MapPost("/api/generate-prompt", async (PromptRequest request, IPromptGeneratorService service) =>
+        endpoints.MapPost("/generate-prompt", async (PromptRequest request, IPromptGeneratorService service) =>
         {
             if (string.IsNullOrWhiteSpace(request.Problem))
             {
@@ -91,11 +96,11 @@ public static class ApiConfigurationExtensions
     }
 
     /// <summary>
-    /// Maps the GET /api/health endpoint.
+    /// Maps the GET /api/v1/health endpoint.
     /// </summary>
-    private static void MapHealthCheckEndpoint(WebApplication app)
+    private static void MapHealthCheckEndpoint(IEndpointRouteBuilder endpoints)
     {
-        app.MapGet("/api/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }))
+        endpoints.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }))
             .WithName("HealthCheck")
             .WithOpenApi()
             .WithDescription("Returns the health status of the API");

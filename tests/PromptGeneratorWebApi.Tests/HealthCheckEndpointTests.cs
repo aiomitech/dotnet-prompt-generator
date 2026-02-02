@@ -26,7 +26,7 @@ public class HealthCheckEndpointTests : IDisposable
     public async Task HealthCheck_ReturnsOkStatus()
     {
         // Act
-        var response = await _client.GetAsync("/api/health");
+        var response = await _client.GetAsync("/api/v1/health");
 
         // Assert
         Assert.True(response.IsSuccessStatusCode);
@@ -36,7 +36,7 @@ public class HealthCheckEndpointTests : IDisposable
     public async Task HealthCheck_ReturnsOkStatusCode()
     {
         // Act
-        var response = await _client.GetAsync("/api/health");
+        var response = await _client.GetAsync("/api/v1/health");
 
         // Assert
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
@@ -46,7 +46,7 @@ public class HealthCheckEndpointTests : IDisposable
     public async Task HealthCheck_ReturnsJsonContentType()
     {
         // Act
-        var response = await _client.GetAsync("/api/health");
+        var response = await _client.GetAsync("/api/v1/health");
 
         // Assert
         Assert.NotNull(response.Content.Headers.ContentType);

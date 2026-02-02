@@ -2,14 +2,13 @@ using System.Text;
 using System.Text.Json;
 using Moq;
 using PromptGeneratorWebApi.Models;
-using PromptGeneratorWebApi.Services;
 using Xunit;
 
 namespace PromptGeneratorWebApi.Tests;
 
 /// <summary>
 /// Integration tests for the PromptGeneratorWebApi endpoints.
-/// Tests the /api/generate-prompt endpoint with various scenarios.
+/// Tests the /api/v1/generate-prompt endpoint with various scenarios.
 /// </summary>
 public class PromptGeneratorEndpointsTests : IDisposable
 {
@@ -47,7 +46,7 @@ public class PromptGeneratorEndpointsTests : IDisposable
 			"application/json");
 
 		// Act
-		var response = await _client.PostAsync("/api/generate-prompt", content);
+		var response = await _client.PostAsync("/api/v1/generate-prompt", content);
 
 		// Assert
 		Assert.True(response.IsSuccessStatusCode);
@@ -75,7 +74,7 @@ public class PromptGeneratorEndpointsTests : IDisposable
 			"application/json");
 
 		// Act
-		var response = await _client.PostAsync("/api/generate-prompt", content);
+		var response = await _client.PostAsync("/api/v1/generate-prompt", content);
 
 		// Assert
 		Assert.Equal(System.Net.HttpStatusCode.BadRequest, response.StatusCode);
@@ -101,7 +100,7 @@ public class PromptGeneratorEndpointsTests : IDisposable
 			"application/json");
 
 		// Act
-		var response = await _client.PostAsync("/api/generate-prompt", content);
+		var response = await _client.PostAsync("/api/v1/generate-prompt", content);
 
 		// Assert
 		Assert.Equal(System.Net.HttpStatusCode.BadRequest, response.StatusCode);
@@ -118,7 +117,7 @@ public class PromptGeneratorEndpointsTests : IDisposable
 			"application/json");
 
 		// Act
-		var response = await _client.PostAsync("/api/generate-prompt", content);
+		var response = await _client.PostAsync("/api/v1/generate-prompt", content);
 
 		// Assert
 		Assert.Equal(System.Net.HttpStatusCode.BadRequest, response.StatusCode);
@@ -142,7 +141,7 @@ public class PromptGeneratorEndpointsTests : IDisposable
 			"application/json");
 
 		// Act
-		var response = await _client.PostAsync("/api/generate-prompt", content);
+		var response = await _client.PostAsync("/api/v1/generate-prompt", content);
 
 		// Assert
 		Assert.True(response.IsSuccessStatusCode);
@@ -163,7 +162,7 @@ public class PromptGeneratorEndpointsTests : IDisposable
 			"application/json");
 
 		// Act
-		var response = await _client.PostAsync("/api/generate-prompt", content);
+		var response = await _client.PostAsync("/api/v1/generate-prompt", content);
 
 		// Assert
 		Assert.Equal(System.Net.HttpStatusCode.InternalServerError, response.StatusCode);
@@ -184,7 +183,7 @@ public class PromptGeneratorEndpointsTests : IDisposable
 			"application/json");
 
 		// Act
-		var response = await _client.PostAsync("/api/generate-prompt", content);
+		var response = await _client.PostAsync("/api/v1/generate-prompt", content);
 
 		// Assert
 		Assert.NotNull(response.Content.Headers.ContentType);
@@ -207,7 +206,7 @@ public class PromptGeneratorEndpointsTests : IDisposable
 			"application/json");
 
 		// Act
-		await _client.PostAsync("/api/generate-prompt", content);
+		await _client.PostAsync("/api/v1/generate-prompt", content);
 
 		// Assert
 		_factory.MockPromptGeneratorService.Verify(

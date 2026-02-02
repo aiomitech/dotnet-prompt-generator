@@ -86,7 +86,7 @@ http://localhost:5000/swagger
 
 ### Generate Optimized Prompt
 
-**Endpoint**: `POST /api/generate-prompt`
+**Endpoint**: `POST /api/v1/generate-prompt`
 
 **Request Body**:
 ```json
@@ -127,7 +127,7 @@ http://localhost:5000/swagger
 
 ### Health Check
 
-**Endpoint**: `GET /api/health`
+**Endpoint**: `GET /api/v1/health`
 
 **Response**:
 ```json
@@ -145,13 +145,13 @@ $body = @{
   problem = "I need to build a REST API with authentication"
 } | ConvertTo-Json
 
-Invoke-RestMethod -Uri "http://localhost:5000/api/generate-prompt" `
+Invoke-RestMethod -Uri "http://localhost:5000/api/v1/generate-prompt" `
   -Method Post `
   -Body $body `
   -ContentType "application/json"
 
 # Health check
-Invoke-RestMethod -Uri "http://localhost:5000/api/health"
+Invoke-RestMethod -Uri "http://localhost:5000/api/v1/health"
 ```
 
 ## Architecture
@@ -309,7 +309,7 @@ dotnet test tests/PromptGeneratorWebApi.Tests/
 
 This project includes:
 - Unit tests for `PromptGeneratorService`
-- Integration tests for `/api/generate-prompt` and `/api/health`
+- Integration tests for `/api/v1/generate-prompt` and `/api/v1/health`
 
 ## Future Enhancements
 
