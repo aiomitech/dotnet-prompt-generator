@@ -177,6 +177,11 @@ Rules:
 - If a command differs significantly between shells, generate **PowerShell-only** syntax.
 - If a third-party tool is cross-platform but examples are Bash-first, translate them to PowerShell before outputting.
 
+**Git Operations (IMPORTANT):**
+- Use `git -C` to run git commands from different directories instead of `cd` with bash syntax
+- Example: `git -C "path\to\repo" status` instead of `cd path && git status`
+- This ensures cross-platform compatibility with the run_in_terminal tool
+
 If PowerShell is not suitable for a task, explicitly call it out and wait for approval before using another shell.
 
 ---
