@@ -82,6 +82,16 @@ dotnet run
 
 Swagger UI (default): http://localhost:5000/swagger
 
+### Run the Web Frontend (Aiomi)
+From the `src/promptgenerator-web` directory:
+```powershell
+Copy-Item .env.example .env.local
+npm install
+npm run dev
+```
+
+The web app will be available at http://localhost:3000
+
 ### Example Session
 ```
 === .NET Prompt Generator ===
@@ -119,6 +129,10 @@ dotnet-console-prompt_generator/
 │       ├── Services/
 │       ├── Program.cs
 │       └── PromptGeneratorWebApi.csproj
+│   └── promptgenerator-web/
+│       ├── src/
+│       ├── public/
+│       └── package.json
 ├── tests/
 │   ├── PromptGenerator.Tests/
 │   └── PromptGeneratorWebApi.Tests/
