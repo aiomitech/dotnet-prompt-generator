@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.0] - 2026-02-02
+
+### Added
+- Next.js web frontend (promptgenerator-web) for prompt generation
+- Frontend setup instructions in the README
+
+### Updated
+- Documentation commands to PowerShell-friendly examples
+
 ## [1.1.0] - 2026-01-31
 
 ### Added
@@ -25,7 +34,7 @@
 
 ### Technical Details
 - Built with .NET 8.0
-- Uses Microsoft.Extensions.AI for OpenAI provider abstraction
+- Uses HttpClient + OpenAI Chat Completions API
 - Implements three-stage prompt generation pipeline
 - Console-based user interface
 

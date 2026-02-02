@@ -39,7 +39,7 @@ src/
 
 ### 1. Clone the Repository
 
-```bash
+```powershell
 git clone https://github.com/aiomitech/dotnet-console-prompt-generator.git
 cd dotnet-console-prompt-generator
 ```
@@ -48,25 +48,25 @@ cd dotnet-console-prompt-generator
 
 Navigate to the Web API project directory:
 
-```bash
+```powershell
 cd src/PromptGeneratorWebApi
 ```
 
 Set your OpenAI API key using User Secrets:
 
-```bash
+```powershell
 dotnet user-secrets set "OpenAI:ApiKey" "your-actual-openai-api-key"
 ```
 
 ### 3. Build the Project
 
-```bash
+```powershell
 dotnet build
 ```
 
 ### 4. Run the API
 
-```bash
+```powershell
 dotnet run
 ```
 
@@ -137,30 +137,18 @@ http://localhost:5000/swagger
 }
 ```
 
-## Testing with cURL
-
-```bash
-# Generate optimized prompt
-curl -X POST http://localhost:5000/api/generate-prompt \
-  -H "Content-Type: application/json" \
-  -d '{"problem": "I need to build a REST API with authentication"}'
-
-# Health check
-curl http://localhost:5000/api/health
-```
-
 ## Testing with PowerShell
 
 ```powershell
 # Generate optimized prompt
 $body = @{
-    problem = "I need to build a REST API with authentication"
+  problem = "I need to build a REST API with authentication"
 } | ConvertTo-Json
 
 Invoke-RestMethod -Uri "http://localhost:5000/api/generate-prompt" `
-    -Method Post `
-    -Body $body `
-    -ContentType "application/json"
+  -Method Post `
+  -Body $body `
+  -ContentType "application/json"
 
 # Health check
 Invoke-RestMethod -Uri "http://localhost:5000/api/health"
@@ -226,13 +214,13 @@ Each stage makes an independent call to OpenAI's Chat Completions API.
 
 ### Running in Development Mode
 
-```bash
+```powershell
 dotnet run --environment Development
 ```
 
 ### Building for Production
 
-```bash
+```powershell
 dotnet publish -c Release -o ./publish
 ```
 
@@ -265,7 +253,7 @@ ENTRYPOINT ["dotnet", "PromptGeneratorWebApi.dll"]
 
 Build and run:
 
-```bash
+```powershell
 docker build -t prompt-generator-api .
 docker run -p 5000:80 -e OpenAI__ApiKey="your-key" prompt-generator-api
 ```
@@ -292,7 +280,7 @@ docker run -p 5000:80 -e OpenAI__ApiKey="your-key" prompt-generator-api
 
 Make sure you've set the API key in User Secrets:
 
-```bash
+```powershell
 cd src/PromptGeneratorWebApi
 dotnet user-secrets set "OpenAI:ApiKey" "your-key"
 ```
@@ -309,13 +297,13 @@ builder.Services.AddHttpClient<IPromptGeneratorService, PromptGeneratorService>(
 
 Trust the development certificate:
 
-```bash
+```powershell
 dotnet dev-certs https --trust
 ```
 
 ## Testing
 
-```bash
+```powershell
 dotnet test tests/PromptGeneratorWebApi.Tests/
 ```
 

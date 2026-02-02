@@ -1,9 +1,7 @@
 # Unit Test Coverage Report
 
 ## Overview
-**Total Test Count**: 33 tests  
-**Pass Rate**: 100% (33/33 passed)  
-**Code Coverage**: High coverage across console and Web API components
+This repository includes unit and integration tests for the console app and Web API projects. Run the tests locally to see the latest pass rate and coverage in your environment.
 
 ## Test Summary
 
@@ -104,7 +102,7 @@
 ### Test Isolation
 - Each test is independent and self-contained
 - No external API calls (all mocked)
-- Fast execution (12 tests complete in < 1 second)
+- Fast execution in local environments
 
 ### Private Method Testing
 - Uses reflection to test private `GetCompletionAsync()` method
@@ -112,16 +110,13 @@
 
 ## Running the Tests
 
-```bash
+```powershell
 dotnet test
 ```
 
 ### Expected Output
 ```
 Test Run Successful.
-Total tests: 33
-  Passed: 33
-     Failed: 0
 ```
 
 ## Future Test Enhancements

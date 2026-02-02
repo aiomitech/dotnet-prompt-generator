@@ -4,7 +4,7 @@
 
 User Secrets are securely stored outside your project directory, making them safe for local development without the risk of accidental commits.
 
-### Windows PowerShell
+### PowerShell
 
 ```powershell
 # Initialize user secrets (run once)
@@ -21,22 +21,6 @@ dotnet user-secrets remove "OpenAI:ApiKey"
 
 # Clear all secrets
 dotnet user-secrets clear
-```
-
-### Windows Command Prompt
-
-```cmd
-dotnet user-secrets init
-dotnet user-secrets set "OpenAI:ApiKey" "sk-your-actual-key-here"
-dotnet user-secrets list
-```
-
-### Linux/macOS
-
-```bash
-dotnet user-secrets init
-dotnet user-secrets set "OpenAI:ApiKey" "sk-your-actual-key-here"
-dotnet user-secrets list
 ```
 
 ## Where Are User Secrets Stored?
@@ -58,7 +42,7 @@ The `<user-secrets-id>` is automatically generated and stored in your `.csproj` 
 
 Once configured, simply run:
 
-```bash
+```powershell
 dotnet run
 ```
 

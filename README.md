@@ -23,12 +23,13 @@ Both the console app and the Web API implement a multi-stage prompt generation p
 ## Prerequisites
 
 - .NET 8.0 or later
+- Node.js 20+ (for the Next.js web frontend)
 - An OpenAI API key (from https://platform.openai.com/api-keys)
 
 ## Setup
 
 ### 1. Navigate to the Project
-```bash
+```powershell
 cd src/PromptGenerator
 ```
 
@@ -37,46 +38,46 @@ cd src/PromptGenerator
 This project uses User Secrets for secure API key management (recommended for local development).
 
 **Using User Secrets (Recommended)**:
-```bash
+```powershell
 dotnet user-secrets init
 dotnet user-secrets set "OpenAI:ApiKey" "your-openai-api-key-here"
 ```
 
 **Or using Environment Variable**:
-```bash
-set OpenAI__ApiKey=your-openai-api-key-here
+```powershell
+$env:OpenAI__ApiKey = "your-openai-api-key-here"
 ```
 
 ### Web API Setup
 
-```bash
+```powershell
 cd src/PromptGeneratorWebApi
 dotnet user-secrets set "OpenAI:ApiKey" "your-openai-api-key-here"
 ```
 
 Or set the environment variable:
 
-```bash
-set OpenAI__ApiKey=your-openai-api-key-here
+```powershell
+$env:OpenAI__ApiKey = "your-openai-api-key-here"
 ```
 
 ## Building and Running
 
 ### Build the Console App
 From the `src/PromptGenerator` directory:
-```bash
+```powershell
 dotnet build
 ```
 
 ### Run the Console App
 From the `src/PromptGenerator` directory:
-```bash
+```powershell
 dotnet run
 ```
 
 ### Run the Web API
 From the `src/PromptGeneratorWebApi` directory:
-```bash
+```powershell
 dotnet run
 ```
 
@@ -150,6 +151,7 @@ dotnet-console-prompt_generator/
 - **System.Net.Http.Json**: HTTP client utilities for JSON serialization
 - **Microsoft.Extensions.Configuration** (v8.0.0): Configuration management
 - **Microsoft.Extensions.Configuration.UserSecrets** (v8.0.0): Secure local credential management via User Secrets
+- **Next.js** (16.1.6), **React** (19.2.3), **Tailwind CSS** (v4) for the web frontend
 
 ## How It Works
 
