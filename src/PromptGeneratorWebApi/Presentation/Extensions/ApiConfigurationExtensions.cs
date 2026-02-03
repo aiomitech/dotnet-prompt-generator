@@ -1,7 +1,8 @@
-using PromptGeneratorWebApi.Models;
-using PromptGeneratorWebApi.Services;
+using PromptGeneratorWebApi.Application.Interfaces;
+using PromptGeneratorWebApi.Presentation.Models;
+using PromptGeneratorWebApi.Infrastructure.Services;
 
-namespace PromptGeneratorWebApi.Extensions;
+namespace PromptGeneratorWebApi.Presentation.Extensions;
 
 /// <summary>
 /// Extension methods for configuring the API middleware and endpoints.
@@ -47,6 +48,7 @@ public static class ApiConfigurationExtensions
     private static void MapEndpoints(WebApplication app)
     {
         var api = app.MapGroup(ApiBasePath);
+
         MapPromptGenerationEndpoint(api);
         MapHealthCheckEndpoint(api);
 

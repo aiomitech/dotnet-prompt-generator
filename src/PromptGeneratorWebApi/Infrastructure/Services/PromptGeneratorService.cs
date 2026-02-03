@@ -1,7 +1,8 @@
 using System.Text;
 using System.Text.Json;
+using PromptGeneratorWebApi.Application.Interfaces;
 
-namespace PromptGeneratorWebApi.Services;
+namespace PromptGeneratorWebApi.Infrastructure.Services;
 
 public class PromptGeneratorService : IPromptGeneratorService
 {
@@ -140,18 +141,5 @@ Please generate an optimized, production-ready prompt that I can copy and paste 
         {
             throw new InvalidOperationException($"Error processing request: {ex.Message}", ex);
         }
-    }
-}
-
-public class PromptGeneratorServiceV2 : IPromptGeneratorService
-{
-    public Task<(string analysis, string context, string optimizedPrompt)> GenerateOptimizedPromptAsync(string problem)
-    {
-        if (string.IsNullOrWhiteSpace(problem))
-        {
-            throw new ArgumentException("Problem cannot be empty", nameof(problem));
-        }
-
-        return Task.FromResult((string.Empty, string.Empty, "Version2"));
     }
 }

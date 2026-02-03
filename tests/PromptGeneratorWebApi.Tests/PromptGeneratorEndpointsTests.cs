@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using Moq;
-using PromptGeneratorWebApi.Models;
+using PromptGeneratorWebApi.Presentation.Models;
 using Xunit;
 
 namespace PromptGeneratorWebApi.Tests;

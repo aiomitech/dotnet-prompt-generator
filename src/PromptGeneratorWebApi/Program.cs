@@ -1,6 +1,6 @@
-using PromptGeneratorWebApi.Extensions;
-using PromptGeneratorWebApi.Models;
-using PromptGeneratorWebApi.Services;
+using PromptGeneratorWebApi.Presentation.Extensions;
+using PromptGeneratorWebApi.Application.Interfaces;
+using PromptGeneratorWebApi.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,8 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Register HttpClient and PromptGeneratorService
-builder.Services.AddHttpClient<IPromptGeneratorService, PromptGeneratorService>();
+// Register services
+builder.Services.AddHttpClient<PromptGeneratorService>();
+builder.Services.AddScoped<IPromptGeneratorService>(sp => sp.GetRequiredService<PromptGeneratorService>());
+builder.Services.AddScoped<PromptGeneratorServiceV2>();
 
 // Add CORS
 builder.Services.AddCors(options =>

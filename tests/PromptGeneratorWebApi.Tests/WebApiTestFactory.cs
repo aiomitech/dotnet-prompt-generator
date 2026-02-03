@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using PromptGeneratorWebApi.Services;
+using PromptGeneratorWebApi.Application.Interfaces;
 
 namespace PromptGeneratorWebApi.Tests;
 
