@@ -1,5 +1,4 @@
 using PromptGeneratorWebApi.Presentation.Extensions;
-using PromptGeneratorWebApi.Application.Interfaces;
 using PromptGeneratorWebApi.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,8 +9,6 @@ builder.Services.AddSwaggerGen();
 
 // Register services
 builder.Services.AddHttpClient<PromptGeneratorService>();
-builder.Services.AddScoped<IPromptGeneratorService>(sp => sp.GetRequiredService<PromptGeneratorService>());
-builder.Services.AddScoped<PromptGeneratorServiceV2>();
 
 // Add CORS
 builder.Services.AddCors(options =>

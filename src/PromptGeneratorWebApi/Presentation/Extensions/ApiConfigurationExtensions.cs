@@ -1,4 +1,3 @@
-using PromptGeneratorWebApi.Application.Interfaces;
 using PromptGeneratorWebApi.Presentation.Models;
 using PromptGeneratorWebApi.Infrastructure.Services;
 
@@ -10,9 +9,7 @@ namespace PromptGeneratorWebApi.Presentation.Extensions;
 public static class ApiConfigurationExtensions
 {
     private const string ApiVersion = "v1";
-    private const string ApiVersionV2 = "v2";
     private const string ApiBasePath = "/api/" + ApiVersion;
-    private const string ApiBasePathV2 = "/api/" + ApiVersionV2;
 
     /// <summary>
     /// Configures the API by setting up middleware pipeline and registering endpoints.
@@ -48,14 +45,8 @@ public static class ApiConfigurationExtensions
     private static void MapEndpoints(WebApplication app)
     {
         var api = app.MapGroup(ApiBasePath);
-
         MapPromptGenerationEndpoint(api);
         MapHealthCheckEndpoint(api);
-
-        // v2 endpoints
-        var apiV2 = app.MapGroup(ApiBasePathV2);
-        MapPromptGenerationEndpointV2(apiV2);
-        MapHealthCheckEndpointV2(apiV2);
     }
 
     /// <summary>
@@ -63,7 +54,7 @@ public static class ApiConfigurationExtensions
     /// </summary>
     private static void MapPromptGenerationEndpoint(IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapPost("/generate-prompt", async (PromptRequest request, IPromptGeneratorService service) =>
+        endpoints.MapPost("/generate-prompt", async (PromptRequest request, PromptGeneratorService service) =>
         {
             if (string.IsNullOrWhiteSpace(request.Problem))
             {
@@ -112,56 +103,5 @@ public static class ApiConfigurationExtensions
             .WithName("HealthCheck")
             .WithOpenApi()
             .WithDescription("Returns the health status of the API");
-    }
-
-    /// <summary>
-    /// Maps the POST /api/v2/generate-prompt endpoint.
-    /// </summary>
-    private static void MapPromptGenerationEndpointV2(IEndpointRouteBuilder endpoints)
-    {
-        endpoints.MapPost("/generate-prompt", async (PromptRequest request, PromptGeneratorServiceV2 service) =>
-        {
-            if (string.IsNullOrWhiteSpace(request.Problem))
-            {
-                return Results.BadRequest(new PromptResponse
-                {
-                    Success = false,
-                    Error = "Problem cannot be empty"
-                });
-            }
-
-            try
-            {
-                var (_, _, optimizedPrompt) = await service.GenerateOptimizedPromptAsync(request.Problem);
-
-                return Results.Ok(new PromptResponse
-                {
-                    Success = true,
-                    OptimizedPrompt = optimizedPrompt
-                });
-            }
-            catch (Exception ex)
-            {
-                return Results.Problem(
-                    detail: ex.Message,
-                    statusCode: 500,
-                    title: "Error generating prompt"
-                );
-            }
-        })
-        .WithName("GeneratePromptV2")
-        .WithOpenApi()
-        .WithDescription("V2: Generates an optimized ChatGPT prompt from a user problem");
-    }
-
-    /// <summary>
-    /// Maps the GET /api/v2/health endpoint.
-    /// </summary>
-    private static void MapHealthCheckEndpointV2(IEndpointRouteBuilder endpoints)
-    {
-        endpoints.MapGet("/health", () => Results.Ok(new { status = "healthy", version = "v2", timestamp = DateTime.UtcNow }))
-            .WithName("HealthCheckV2")
-            .WithOpenApi()
-            .WithDescription("Returns the health status of the V2 API");
     }
 }
