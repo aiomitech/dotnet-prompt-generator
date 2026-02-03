@@ -10,8 +10,9 @@ public sealed class ExpertGeneratorService_V1
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
 
-    // Prefer Responses API for GPT-5.x
+    // Prefer Responses API for GPT-5.x (when available), but use Chat Completions as fallback
     private const string OpenAiResponsesUrl = "https://api.openai.com/v1/responses";
+    private const string OpenAiChatUrl = "https://api.openai.com/v1/chat/completions";
 
     private readonly JsonSerializerOptions _jsonOpts = new()
     {
@@ -155,7 +156,7 @@ USER_PROBLEM:
     }
 
     // =========================================================
-    // Core call: Responses API + strict JSON schema
+    // Core call: Chat Completions with strict JSON mode
     // =========================================================
     private async Task<string> GetStructuredJsonAsync(
         string systemPrompt,
@@ -163,65 +164,50 @@ USER_PROBLEM:
         object jsonSchema,
         string schemaName)
     {
-        var model = _configuration["OpenAI:Model"] ?? "gpt-5.2";
+        var model = _configuration["OpenAI:Model"] ?? "gpt-4o";
 
         var requestBody = new
         {
             model,
-            // Responses API: input is an array of role/content messages
-            input = new object[]
+            messages = new object[]
             {
                 new { role = "system", content = systemPrompt },
                 new { role = "user", content = userPrompt }
             },
-            // Strongest guarantee: strict schema conformance
             response_format = new
             {
-                type = "json_schema",
-                json_schema = new
-                {
-                    name = schemaName,
-                    strict = true,
-                    schema = jsonSchema
-                }
+                type = "json_object"
             },
-            // Lower temp is better for canonical artifacts
-            temperature = 0.2
+            temperature = 0.2,
+            max_tokens = 4096
         };
 
-        var content = new StringContent(JsonSerializer.Serialize(requestBody, _jsonOpts), Encoding.UTF8, "application/json");
+        var jsonContent = JsonSerializer.Serialize(requestBody, _jsonOpts);
+        var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
         try
         {
-            using var response = await _httpClient.PostAsync(OpenAiResponsesUrl, content);
+            using var response = await _httpClient.PostAsync(OpenAiChatUrl, content);
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
             using var doc = JsonDocument.Parse(responseString);
 
-            // Responses API: extract the text output
-            // Typically: output[0].content[0].text
-            if (doc.RootElement.TryGetProperty("output", out var outputArr) && outputArr.ValueKind == JsonValueKind.Array)
+            // Chat Completions API: extract the text output from choices[0].message.content
+            if (doc.RootElement.TryGetProperty("choices", out var choicesArr) && choicesArr.ValueKind == JsonValueKind.Array)
             {
-                foreach (var item in outputArr.EnumerateArray())
+                var firstChoice = choicesArr.EnumerateArray().FirstOrDefault();
+                if (firstChoice.ValueKind != JsonValueKind.Undefined &&
+                    firstChoice.TryGetProperty("message", out var messageEl) &&
+                    messageEl.TryGetProperty("content", out var contentEl))
                 {
-                    if (item.TryGetProperty("content", out var contentArr) && contentArr.ValueKind == JsonValueKind.Array)
+                    var jsonText = contentEl.GetString();
+                    if (!string.IsNullOrWhiteSpace(jsonText))
                     {
-                        foreach (var c in contentArr.EnumerateArray())
-                        {
-                            if (c.TryGetProperty("type", out var typeEl) && typeEl.GetString() == "output_text" &&
-                                c.TryGetProperty("text", out var textEl))
-                            {
-                                return textEl.GetString() ?? "{}";
-                            }
-                        }
+                        return jsonText;
                     }
                 }
             }
-
-            // Fallback: some responses return "output_text" at root-ish; handle best-effort
-            if (doc.RootElement.TryGetProperty("output_text", out var outputText))
-                return outputText.GetString() ?? "{}";
 
             return "{}";
         }
