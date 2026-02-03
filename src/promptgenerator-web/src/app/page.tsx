@@ -1,4 +1,4 @@
-import PromptForm from "@/components/PromptForm";
+import GeneratorTabs from "@/components/GeneratorTabs";
 
 const features = [
   {
@@ -161,7 +161,7 @@ export default function Home() {
               </ul>
             </div>
           </div>
-          <PromptForm />
+          <GeneratorTabs />
         </section>
 
         <section id="features" className="space-y-10">

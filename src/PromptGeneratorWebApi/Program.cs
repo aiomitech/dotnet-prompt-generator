@@ -9,6 +9,7 @@ builder.Services.AddSwaggerGen();
 
 // Register services
 builder.Services.AddHttpClient<PromptGeneratorService>();
+builder.Services.AddHttpClient<ExpertGeneratorService_V1>();
 
 // Add CORS
 builder.Services.AddCors(options =>

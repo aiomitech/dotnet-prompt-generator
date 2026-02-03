@@ -1,5 +1,6 @@
 using PromptGeneratorWebApi.Models;
 using PromptGeneratorWebApi.Services;
+using PromptGeneratorWebApi.Infrastructure.Services;
 
 namespace PromptGeneratorWebApi.Extensions;
 
@@ -46,6 +47,7 @@ public static class ApiConfigurationExtensions
     {
         var api = app.MapGroup(ApiBasePath);
         MapPromptGenerationEndpoint(api);
+        MapExpertGenerationEndpoint(api);
         MapHealthCheckEndpoint(api);
     }
 
@@ -54,7 +56,7 @@ public static class ApiConfigurationExtensions
     /// </summary>
     private static void MapPromptGenerationEndpoint(IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapPost("/generate-prompt", async (PromptRequest request, PromptGeneratorService service) =>
+        endpoints.MapPost("/generate-prompt", async (PromptRequest request, Infrastructure.Services.PromptGeneratorService service) =>
         {
             if (string.IsNullOrWhiteSpace(request.Problem))
             {
@@ -92,6 +94,56 @@ public static class ApiConfigurationExtensions
         .WithName("GeneratePrompt")
         .WithOpenApi()
         .WithDescription("Generates an optimized ChatGPT prompt from a user problem through a multi-stage AI pipeline");
+    }
+
+    /// <summary>
+    /// Maps the POST /api/v1/expert-generate-prompt endpoint.
+    /// Uses the advanced ExpertGeneratorService_V1 with three-stage canonical JSON pipeline.
+    /// </summary>
+    private static void MapExpertGenerationEndpoint(IEndpointRouteBuilder endpoints)
+    {
+        endpoints.MapPost("/expert-generate-prompt", async (PromptRequest request, ExpertGeneratorService_V1 service) =>
+        {
+            if (string.IsNullOrWhiteSpace(request.Problem))
+            {
+                return Results.BadRequest(new PromptResponse
+                {
+                    Success = false,
+                    Error = "Problem cannot be empty"
+                });
+            }
+
+            try
+            {
+                var (analysis, context, optimizedPrompt) = await service.GenerateOptimizedPromptAsync(request.Problem);
+
+                return Results.Ok(new
+                {
+                    success = true,
+                    data = new
+                    {
+                        optimizedPrompt,
+                        details = new
+                        {
+                            expertDesign = analysis,
+                            methodologyExecution = context,
+                            optimizedResponse = optimizedPrompt
+                        }
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(
+                    detail: ex.Message,
+                    statusCode: 500,
+                    title: "Error generating expert prompt"
+                );
+            }
+        })
+        .WithName("ExpertGeneratePrompt")
+        .WithOpenApi()
+        .WithDescription("Advanced three-stage expert prompt generation using canonical JSON schemas and strict response formatting");
     }
 
     /// <summary>
